@@ -1,12 +1,15 @@
 package com.tyczj.extendedcalendarview;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,12 +164,32 @@ public class CalendarAdapter extends BaseAdapter{
 			}else{
 				dayTV.setVisibility(View.VISIBLE);
 				dayTV.setText(String.valueOf(day.getDay()));
+				if(isToday(day)){
+			        v.setBackgroundColor(context.getResources().getColor(android.R.color.holo_blue_light));
+				}else{
+			        v.setBackground(context.getResources().getDrawable(R.drawable.day_bg));
+				}
 			}
 		}
 		
 		return v;
 	}
-	
+	public boolean isToday(final Day day) {
+        if(day == null) {
+                return false;
+        }
+        try{
+        	SimpleDateFormat _sdf = new SimpleDateFormat("yyyy-MM-dd");
+        	Date _d = _sdf.parse(day.getYear()+"-"+(day.getMonth()+1)+"-"+day.getDay());
+        	if(DateUtils.isToday(_d.getTime())) {
+        		return true;
+        	}
+        	return false;
+        } catch(Exception e) {
+
+        }
+        return false;
+}
 	public void refreshDays()
     {
     	// clear items
